@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
+
 @Component
 public class MovieDao extends AbstractMFlixDao {
 
@@ -118,10 +121,19 @@ public class MovieDao extends AbstractMFlixDao {
      */
     public List<Document> getMoviesByCountry(String... country) {
 
-        Bson queryFilter = new Document();
-        Bson projection = new Document();
-        //TODO> Ticket: Projection - implement the query and projection required by the unit test
+//        Bson queryFilter = new Document();
+//        Bson projection = new Document();
+//        //TODO> Ticket: Projection - implement the query and projection required by the unit test
+//        List<Document> movies = new ArrayList<>();
+
+        // TODO DOIT
+        Bson queryFilter = all("countries", country);
+        Bson projection = fields(include("title"));
         List<Document> movies = new ArrayList<>();
+        moviesCollection
+                .find(queryFilter)
+                .projection(projection)
+                .into(movies);
 
         return movies;
     }
@@ -162,11 +174,14 @@ public class MovieDao extends AbstractMFlixDao {
      * @return List of documents sorted by sortKey that match the cast selector.
      */
     public List<Document> getMoviesByCast(String sortKey, int limit, int skip, String... cast) {
-        Bson castFilter = null;
-        Bson sort = null;
+//        Bson castFilter = null;
+//        Bson sort = null;
         //TODO> Ticket: Subfield Text Search - implement the expected cast
         // filter and sort
         List<Document> movies = new ArrayList<>();
+        Bson castFilter = in("cast", cast);
+        Bson sort = Sorts.descending(sortKey);
+
         moviesCollection
                 .find(castFilter)
                 .sort(sort)
