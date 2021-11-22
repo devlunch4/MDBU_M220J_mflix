@@ -41,9 +41,7 @@
     * Q: After passing the relevant unit tests, what is the validation code for Projection?
         * A: 5a94762f949291c47fa6474d
 
-
-# Chapter 1: Driver Setup
-
+    
 > ## Ticket: Subfield Text Search
 * ### Testing and Running the Application
     * <pre> mvn test -Dtest=TextAndSubfieldTest</pre>
