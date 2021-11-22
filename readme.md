@@ -60,3 +60,12 @@
 
     * Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
         * A: 5aa7d3948adcc3fb770f06fb
+
+
+> ## Ticket5: Paging
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=FacetedSearchTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+
+    * Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
+        * A: 5a9824d057adff467fb1f526
