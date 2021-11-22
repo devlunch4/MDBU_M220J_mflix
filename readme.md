@@ -22,7 +22,7 @@
 
 # Chapter 0: Introduction and Setup
 
-> ## Ticket: Database Connection
+> ## Ticket1: Database Connection
 * ### Testing and Running the Application 
     * <pre> mvn test -Dtest=ConnectionTest</pre>
     * <pre> mvn spring-boot:run</pre>
@@ -33,7 +33,7 @@
 
 # Chapter 1: Driver Setup
 
-> ## Ticket: Projection
+> ## Ticket2: Projection
 * ### Testing and Running the Application
     * <pre> mvn test -Dtest=ProjectionTest</pre>
     * <pre> mvn spring-boot:run</pre>
@@ -42,10 +42,21 @@
         * A: 5a94762f949291c47fa6474d
 
     
-> ## Ticket: Subfield Text Search
+> ## Ticket3: Subfield Text Search
 * ### Testing and Running the Application
     * <pre> mvn test -Dtest=TextAndSubfieldTest</pre>
     * <pre> mvn spring-boot:run</pre>
 
     * Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
         * A: 5a96a6a29c453a40d04922cc
+
+
+# Chapter 2: User-Facing Backend
+
+> ## Ticket4: Faceted Search
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=FacetedSearchTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+
+    * Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
+        * A: 5aa7d3948adcc3fb770f06fb

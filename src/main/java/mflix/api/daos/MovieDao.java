@@ -79,7 +79,7 @@ public class MovieDao extends AbstractMFlixDao {
      * `tomatoes.viewer.numReviews`
      *
      * @param limit - max number of returned documents.
-     * @param skip  - number of documents to be skipped.
+     * @param skip - number of documents to be skipped.
      * @return list of documents.
      */
     @SuppressWarnings("UnnecessaryLocalVariable")
@@ -94,8 +94,8 @@ public class MovieDao extends AbstractMFlixDao {
      * Finds a limited amount of movies documents, for a given sort order.
      *
      * @param limit - max number of documents to be returned.
-     * @param skip  - number of documents to be skipped.
-     * @param sort  - result sorting criteria.
+     * @param skip - number of documents to be skipped.
+     * @param sort - result sorting criteria.
      * @return list of documents that sorted by the defined sort criteria.
      */
     public List<Document> getMovies(int limit, int skip, Bson sort) {
@@ -121,15 +121,12 @@ public class MovieDao extends AbstractMFlixDao {
      */
     public List<Document> getMoviesByCountry(String... country) {
 
-//        Bson queryFilter = new Document();
-//        Bson projection = new Document();
-//        //TODO> Ticket: Projection - implement the query and projection required by the unit test
-//        List<Document> movies = new ArrayList<>();
+        //TODO> Ticket: Projection - implement the query and projection required by the unit test
+        List<Document> movies = new ArrayList<>();
 
-        // TODO DOIT
         Bson queryFilter = all("countries", country);
         Bson projection = fields(include("title"));
-        List<Document> movies = new ArrayList<>();
+
         moviesCollection
                 .find(queryFilter)
                 .projection(projection)
@@ -142,8 +139,8 @@ public class MovieDao extends AbstractMFlixDao {
      * This method will execute the following mongo shell query: db.movies.find({"$text": { "$search":
      * `keywords` }}, {"score": {"$meta": "textScore"}}).sort({"score": {"$meta": "textScore"}})
      *
-     * @param limit    - integer value of number of documents to be limited to.
-     * @param skip     - number of documents to be skipped.
+     * @param limit - integer value of number of documents to be limited to.
+     * @param skip - number of documents to be skipped.
      * @param keywords - text matching keywords or terms
      * @return List of query matching Document objects
      */
@@ -168,17 +165,15 @@ public class MovieDao extends AbstractMFlixDao {
      * field.
      *
      * @param sortKey - sort key.
-     * @param limit   - number of documents to be returned.
-     * @param skip    - number of documents to be skipped.
-     * @param cast    - cast selector.
+     * @param limit - number of documents to be returned.
+     * @param skip - number of documents to be skipped.
+     * @param cast - cast selector.
      * @return List of documents sorted by sortKey that match the cast selector.
      */
     public List<Document> getMoviesByCast(String sortKey, int limit, int skip, String... cast) {
-//        Bson castFilter = null;
-//        Bson sort = null;
-        //TODO> Ticket: Subfield Text Search - implement the expected cast
-        // filter and sort
+
         List<Document> movies = new ArrayList<>();
+
         Bson castFilter = in("cast", cast);
         Bson sort = Sorts.descending(sortKey);
 
@@ -189,6 +184,7 @@ public class MovieDao extends AbstractMFlixDao {
                 .skip(skip)
                 .iterator()
                 .forEachRemaining(movies::add);
+
         return movies;
     }
 
@@ -196,9 +192,9 @@ public class MovieDao extends AbstractMFlixDao {
      * Finds all movies that match the provide `genres`, sorted descending by the `sortKey` field.
      *
      * @param sortKey - sorting key string.
-     * @param limit   - number of documents to be returned.
-     * @param skip    - number of documents to be skipped
-     * @param genres  - genres matching string vargs.
+     * @param limit - number of documents to be returned.
+     * @param skip - number of documents to be skipped
+     * @param genres - genres matching string vargs.
      * @return List of matching Document objects.
      */
     public List<Document> getMoviesByGenre(String sortKey, int limit, int skip, String... genres) {
@@ -210,7 +206,7 @@ public class MovieDao extends AbstractMFlixDao {
         // TODO > Ticket: Paging - implement the necessary cursor methods to support simple
         // pagination like skip and limit in the code below
         moviesCollection.find(castFilter).sort(sort).iterator()
-        .forEachRemaining(movies::add);
+                .forEachRemaining(movies::add);
         return movies;
     }
 
@@ -291,6 +287,10 @@ public class MovieDao extends AbstractMFlixDao {
         // Your job is to order the stages correctly in the pipeline.
         // Starting with the `matchStage` add the remaining stages.
         pipeline.add(matchStage);
+        pipeline.add(sortStage);
+        pipeline.add(skipStage);
+        pipeline.add(limitStage);
+        pipeline.add(facetStage);
 
         moviesCollection.aggregate(pipeline).iterator().forEachRemaining(movies::add);
         return movies;
