@@ -41,12 +41,15 @@ public class UserDao extends AbstractMFlixDao {
 
     private final Logger log;
 
+    private CodecRegistry pojoCodecRegistry;
+
     @Autowired
     public UserDao(
             MongoClient mongoClient, @Value("${spring.mongodb.database}") String databaseName) {
         super(mongoClient, databaseName);
 
-        CodecRegistry pojoCodecRegistry =
+        this.db = this.mongoClient.getDatabase(MFLIX_DATABASE);
+        this.pojoCodecRegistry =
                 fromRegistries(
                         MongoClientSettings.getDefaultCodecRegistry(),
                         fromProviders(PojoCodecProvider.builder().automatic(true).build()));

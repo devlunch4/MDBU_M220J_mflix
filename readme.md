@@ -104,3 +104,21 @@
 
     * Q: After passing the relevant tests, what is the validation code for Get Comments?
         * A: 5ab5094fb526e43b570e4633
+
+
+> ## Ticket10: Create/Update Comments
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=UpdateCreateCommentTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+
+    * Q: After passing the relevant unit tests, what is the validation code for Create/Update Comments?
+        * A: 5aba8d5113910c25d7058f8f
+
+
+> ## Ticket11: Delete Comments
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=DeleteCommentTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+
+    * Q: After passing the relevant tests, what is the validation code for Delete Comments?
+        * A: 5aba8d5113910c25d7058f8f
