@@ -103,4 +103,4 @@
     * <pre> mvn spring-boot:run</pre>
 
     * Q: After passing the relevant tests, what is the validation code for Get Comments?
-        * A: 5aabe31503ac76bc4f73e267
+        * A: 5ab5094fb526e43b570e4633

@@ -69,6 +69,9 @@ public class MovieDao extends AbstractMFlixDao {
         pipeline.add(match);
         // TODO> Ticket: Get Comments - implement the lookup stage that allows the comments to
         // retrieved with Movies.
+        Bson join_with_comments = Aggregates.lookup("comments", "_id", "movie_id", "comments");
+        pipeline.add(join_with_comments);
+
         Document movie = moviesCollection.aggregate(pipeline).first();
 
         return movie;
