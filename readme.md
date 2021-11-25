@@ -16,7 +16,7 @@
 
 * ### Running the Unit Tests
     * <pre>cd mflix
-      mvn -Dtest=<TestClass> test</pre>
+      mvn -Dtest=&lt;TestClass&gt; test</pre>
     * <pre>cd mflix
       mvn -Dtest=ConnectionTest test</pre>
 
@@ -79,3 +79,10 @@
 
     * Q: After passing the relevant tests, what is the validation code for User Management?
         * A: 5a8d8ee2f9588ca2701894be
+
+
+
+> ## Ticket7: Durable Writes  
+*
+  * Q: Which of the following write concerns are more durable than the default?
+    * A: WriteConcern.W2, WriteConcern.MAJORITY
