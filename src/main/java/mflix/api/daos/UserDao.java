@@ -86,17 +86,10 @@ public class UserDao extends AbstractMFlixDao {
     public boolean createUserSession(String userId, String jwt) {
         //TODO> Ticket: User Management - implement the method that allows session information to be
         // stored in it's designated collection.
-        Session session = new Session();
-        session.setUserId(userId);
-        session.setJwt(jwt);
-
-        if (Optional.ofNullable(sessionsCollection.find(eq("user_id", userId)).first()).isPresent()) {
-            sessionsCollection.updateOne(eq("user_id", userId), set("jwt", jwt));
-        } else {
-            sessionsCollection.insertOne(session);
-        }
-
-        //return false;
+        Bson updateFilter = new Document("user_id", userId);
+        Bson setUpdate = Updates.set("jwt", jwt);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        sessionsCollection.updateOne(updateFilter, setUpdate, options);
         return true;
 
         //TODO > Ticket: Handling Errors - implement a safeguard against
@@ -110,10 +103,8 @@ public class UserDao extends AbstractMFlixDao {
      * @return User object or null.
      */
     public User getUser(String email) {
-        User user = new User();
-        user = usersCollection.find(eq("email", email)).first();
         //TODO> Ticket: User Management - implement the query that returns the first User object.
-        return user;
+        return usersCollection.find(new Document("email", email)).limit(1).first();
     }
 
     /**
@@ -125,13 +116,18 @@ public class UserDao extends AbstractMFlixDao {
     public Session getUserSession(String userId) {
         //TODO> Ticket: User Management - implement the method that returns Sessions for a given
         // userId
-        return sessionsCollection.find(eq("user_id", userId)).first();
+        return sessionsCollection.find(new Document("user_id", userId)).limit(1).first();
     }
 
     public boolean deleteUserSessions(String userId) {
         //TODO> Ticket: User Management - implement the delete user sessions method
-        sessionsCollection.deleteMany(eq("user_id", userId));
-        return true;
+        Document sessionDeleteFilter = new Document("user_id", userId);
+        DeleteResult res = sessionsCollection.deleteOne(sessionDeleteFilter);
+        if (res.getDeletedCount() < 1) {
+            log.warn("User `{}` could not be found in sessions collection.", userId);
+        }
+
+        return res.wasAcknowledged();
     }
 
     /**
@@ -145,10 +141,18 @@ public class UserDao extends AbstractMFlixDao {
         //TODO> Ticket: User Management - implement the delete user method
         //TODO > Ticket: Handling Errors - make this method more robust by
         // handling potential exceptions.
-        sessionsCollection.deleteMany(eq("user_id", email));
-        usersCollection.deleteMany(eq("email", email));
-        return true;
-        //return false;
+        // remove user sessions
+        if (deleteUserSessions(email)) {
+            Document userDeleteFilter = new Document("email", email);
+            DeleteResult res = usersCollection.deleteOne(userDeleteFilter);
+
+            if (res.getDeletedCount() < 0) {
+                log.warn("User with `email` {} not found. Potential concurrent operation?!");
+            }
+
+            return res.wasAcknowledged();
+        }
+        return false;
     }
 
     /**
