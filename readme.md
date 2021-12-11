@@ -48,3 +48,14 @@
   >* Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
   >* A: 5a96a6a29c453a40d04922cc 
 
+
+# Chapter 2: User-Facing Backend
+
+> ## Ticket4: Faceted Search
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=FacetedSearchTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for Faceted Search?
+  >* A: 5aa7d3948adcc3fb770f06fb 
+
+
