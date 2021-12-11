@@ -58,4 +58,10 @@
   >* Q: After passing the relevant tests, what is the validation code for Faceted Search?
   >* A: 5aa7d3948adcc3fb770f06fb 
 
+> ## Ticket5: Paging
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=PagingTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for Paging?
+  >* A: 5a9824d057adff467fb1f526
 
