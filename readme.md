@@ -40,3 +40,11 @@
     >* Q: After passing the relevant unit tests, what is the validation code for Projection?
     >* A: 5a94762f949291c47fa6474d
 
+
+> ## Ticket3: Subfield Text Search
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=TextAndSubfieldTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for Text and Subfield Search?
+  >* A: 5a96a6a29c453a40d04922cc 
+
