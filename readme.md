@@ -84,3 +84,12 @@
   * <pre> mvn spring-boot:run</pre>
   >* Q: After passing the relevant tests, what is the validation code for User Preferences?
   >* A: 5aabe31503ac76bc4f73e267
+
+> ## Ticket9: Get Comments
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=GetCommentsTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for Get Comments?  
+Hint: We need to sort the comments in the $lookup stage.  
+  >* A: 5ab5094fb526e43b570e4633
+
