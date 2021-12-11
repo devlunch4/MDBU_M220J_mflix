@@ -3,6 +3,7 @@
 > ## README: Setting Up mflix
 
 * ### down m220/mflix-java.zip
+* https://s3.amazonaws.com/edu-downloads.10gen.com/M220J/2021/October/static/handouts/m220/mflix-java.zip
 * ### Local Environment Dependencies
     * Java 1.8
     * Maven
@@ -26,7 +27,16 @@
 * ### Testing and Running the Application 
     * <pre> mvn test -Dtest=ConnectionTest</pre>
     * <pre> mvn spring-boot:run</pre>
-   
-    * Q: After passing the relevant tests, what is the validation code for Connection?
-      * A: 5a9026003a466d5ac6497a9d
+    >* Q: After passing the relevant tests, what is the validation code for Connection?
+    >* A: 5a9026003a466d5ac6497a9d
+
+
+# Chapter 1: Driver Setup
+
+> ## Ticket2: Projection
+* ### Testing and Running the Application
+    * <pre> mvn test -Dtest=ProjectionTest</pre>
+    * <pre> mvn spring-boot:run</pre>
+    >* Q: After passing the relevant unit tests, what is the validation code for Projection?
+    >* A: 5a94762f949291c47fa6474d
 
