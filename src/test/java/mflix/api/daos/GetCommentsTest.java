@@ -71,8 +71,7 @@ public class GetCommentsTest extends TicketTest {
     Assert.assertEquals(
         "Comments list size does not match expected", expectedSize, commentDocs.size());
 
-    //String expectedName = "Arya Stark";
-    String expectedName =  "Anthony Cline";
+    String expectedName = "Arya Stark";
     Assert.assertEquals(
         "Expected `name` field does match: check your " + "getMovie() comments sort order.",
         expectedName,
