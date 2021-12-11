@@ -31,9 +31,9 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class UserDao extends AbstractMFlixDao {
 
     private final MongoCollection<User> usersCollection;
-    //TODO> Ticket: User Management - do the necessary changes so that the sessions collection
+    //TODO> Ticket6: User Management - do the necessary changes so that the sessions collection
     //returns a Session object
-    private final MongoCollection<Document> sessionsCollection;
+    private final MongoCollection<Session> sessionsCollection;
 
     private final Logger log;
 
@@ -48,9 +48,9 @@ public class UserDao extends AbstractMFlixDao {
 
         usersCollection = db.getCollection("users", User.class).withCodecRegistry(pojoCodecRegistry);
         log = LoggerFactory.getLogger(this.getClass());
-        //TODO> Ticket: User Management - implement the necessary changes so that the sessions
+        //TODO> Ticket6: User Management - implement the necessary changes so that the sessions
         // collection returns a Session objects instead of Document objects.
-        sessionsCollection = db.getCollection("sessions");
+        sessionsCollection = db.getCollection("sessions", Session.class).withCodecRegistry(pojoCodecRegistry);
     }
 
     /**
@@ -76,9 +76,14 @@ public class UserDao extends AbstractMFlixDao {
      * @return true if successful
      */
     public boolean createUserSession(String userId, String jwt) {
-        //TODO> Ticket: User Management - implement the method that allows session information to be
+        //TODO> Ticket6: User Management - implement the method that allows session information to be
         // stored in it's designated collection.
-        return false;
+        //return false;
+        Bson updateFilter = new Document("user_id", userId);
+        Bson setUpdate = Updates.set("jwt", jwt);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        sessionsCollection.updateOne(updateFilter, setUpdate, options);
+        return true;
         //TODO > Ticket: Handling Errors - implement a safeguard against
         // creating a session with the same jwt token.
     }
@@ -91,8 +96,8 @@ public class UserDao extends AbstractMFlixDao {
      */
     public User getUser(String email) {
         User user = null;
-        //TODO> Ticket: User Management - implement the query that returns the first User object.
-        return user;
+        //TODO> Ticket6: User Management - implement the query that returns the first User object.
+        return usersCollection.find(new Document("email", email)).limit(1).first();
     }
 
     /**
@@ -102,14 +107,20 @@ public class UserDao extends AbstractMFlixDao {
      * @return Session object or null.
      */
     public Session getUserSession(String userId) {
-        //TODO> Ticket: User Management - implement the method that returns Sessions for a given
+        //TODO> Ticket6: User Management - implement the method that returns Sessions for a given
         // userId
-        return null;
+        return sessionsCollection.find(new Document("user_id", userId)).limit(1).first();
     }
 
     public boolean deleteUserSessions(String userId) {
-        //TODO> Ticket: User Management - implement the delete user sessions method
-        return false;
+        //TODO> Ticket6: User Management - implement the delete user sessions method
+        Document sessionDeleteFilter = new Document("user_id", userId);
+        DeleteResult res = sessionsCollection.deleteOne(sessionDeleteFilter);
+        if (res.getDeletedCount() < 1) {
+            log.warn("User `{}` could not be found in sessions collection.", userId);
+        }
+
+        return res.wasAcknowledged();
     }
 
     /**
@@ -120,10 +131,21 @@ public class UserDao extends AbstractMFlixDao {
      */
     public boolean deleteUser(String email) {
         // remove user sessions
-        //TODO> Ticket: User Management - implement the delete user method
+        //TODO> Ticket6: User Management - implement the delete user method
+        if (deleteUserSessions(email)) {
+            Document userDeleteFilter = new Document("email", email);
+            DeleteResult res = usersCollection.deleteOne(userDeleteFilter);
+
+            if (res.getDeletedCount() < 0) {
+                log.warn("User with `email` {} not found. Potential concurrent operation?!");
+            }
+
+            return res.wasAcknowledged();
+        }
+        return false;
         //TODO > Ticket: Handling Errors - make this method more robust by
         // handling potential exceptions.
-        return false;
+        //return false;
     }
 
     /**
