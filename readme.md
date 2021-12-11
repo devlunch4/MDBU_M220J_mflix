@@ -71,3 +71,16 @@
   * <pre> mvn spring-boot:run</pre>
   >* Q: After passing the relevant tests, what is the validation code for User Management?
   >* A: 5a8d8ee2f9588ca2701894be
+
+> ## Ticket7: Durable Writes
+
+  >* A:   
+      WriteConcern.W2
+      WriteConcern.MAJORITY
+
+> ## Ticket8: User Preferences
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=UserPreferencesTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for User Preferences?
+  >* A: 5aabe31503ac76bc4f73e267
