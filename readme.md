@@ -93,3 +93,9 @@
 Hint: We need to sort the comments in the $lookup stage.  
   >* A: 5ab5094fb526e43b570e4633
 
+> ## Ticket10: Create/Update Comments
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=UpdateCreateCommentTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant unit tests, what is the validation code for Create/Update Comments?
+  >* A: 5aba8d5113910c25d7058f8f

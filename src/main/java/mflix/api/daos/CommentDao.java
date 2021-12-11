@@ -77,11 +77,17 @@ public class CommentDao extends AbstractMFlixDao {
      */
     public Comment addComment(Comment comment) {
 
-        // TODO> Ticket - Update User reviews: implement the functionality that enables adding a new
+        // TODO> Ticket10 - Update User reviews: implement the functionality that enables adding a new
         // comment.
+        if (comment.getId() == null || comment.getId().isEmpty()) {
+            throw new IncorrectDaoOperation("Comment objects need to have an id field set.");
+        }
+        commentCollection.insertOne(comment);
+        return comment;
+
         // TODO> Ticket - Handling Errors: Implement a try catch block to
         // handle a potential write exception when given a wrong commentId.
-        return null;
+        // return null;
     }
 
     /**
@@ -99,12 +105,35 @@ public class CommentDao extends AbstractMFlixDao {
      */
     public boolean updateComment(String commentId, String text, String email) {
 
-        // TODO> Ticket - Update User reviews: implement the functionality that enables updating an
+        // TODO> Ticket10 - Update User reviews: implement the functionality that enables updating an
         // user own comments
-        // TODO> Ticket - Handling Errors: Implement a try catch block to
-        // handle a potential write exception when given a wrong commentId.
+
+        Bson filter = Filters.and(
+                Filters.eq("email", email),
+                Filters.eq("_id", new ObjectId(commentId)));
+        Bson update = Updates.combine(Updates.set("text", text),
+                Updates.set("date", new Date()));
+        UpdateResult res = commentCollection.updateOne(filter, update);
+
+        if (res.getMatchedCount() > 0) {
+
+            if (res.getModifiedCount() != 1) {
+                log.warn("Comment `{}` text was not updated. Is it the same text?");
+            }
+
+            return true;
+        }
+        log.error("Could not update comment `{}`. Make sure the comment is owned by `{}`",
+                commentId, email);
         return false;
-    }
+
+
+
+
+    // TODO> Ticket - Handling Errors: Implement a try catch block to
+    // handle a potential write exception when given a wrong commentId.
+    // return false;
+}
 
     /**
      * Deletes comment that matches user email and commentId.
