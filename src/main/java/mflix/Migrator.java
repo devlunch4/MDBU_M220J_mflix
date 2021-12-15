@@ -81,7 +81,7 @@ public class Migrator {
         System.out.println("Dataset cleanup migration");
 
         // set your MongoDB Cluster connection string
-        String mongoUri = "<YOUR ATLAS CLUSTER URI>";
+        String mongoUri = "mongodb+srv://m220student:m220password@mflix.9cr2d.mongodb.net/test";
 
         // instantiate database and collection objects
         MongoDatabase mflix = MongoClients.create(mongoUri).getDatabase("sample_mflix");
