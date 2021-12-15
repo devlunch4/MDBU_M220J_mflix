@@ -106,3 +106,13 @@ Hint: We need to sort the comments in the $lookup stage.
   * <pre> mvn spring-boot:run</pre>
   >* Q: After passing the relevant tests, what is the validation code for Delete Comments?
   >* A: 5ac25c280a80ed6e67e1cecb
+
+
+# Chapter 3: Admin Backend
+
+> ## Ticket12: User Report
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=UserReportTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+>* Q: After passing the relevant tests, what is the validation code for User Report?
+>* A: 5accad3272455e5db79e4dad
