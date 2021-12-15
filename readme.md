@@ -99,3 +99,10 @@ Hint: We need to sort the comments in the $lookup stage.
   * <pre> mvn spring-boot:run</pre>
   >* Q: After passing the relevant unit tests, what is the validation code for Create/Update Comments?
   >* A: 5aba8d5113910c25d7058f8f
+
+> ## Ticket11: Delete Comments
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=DeleteCommentTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+  >* Q: After passing the relevant tests, what is the validation code for Delete Comments?
+  >* A: 5ac25c280a80ed6e67e1cecb
