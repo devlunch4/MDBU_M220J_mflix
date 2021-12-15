@@ -133,3 +133,17 @@ Hint: We need to sort the comments in the $lookup stage.
   * <pre> mvn spring-boot:run</pre>
 >* Q: After passing the relevant tests, what is the validation code for Connection Pooling?
 >* A: 5ad4f4f58d4b377bcf55d742
+
+> ## Ticket15: Handling Timeouts
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=TimeoutsTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+>* Q: After passing the relevant tests, what is the validation code for Connection Pooling?
+>* A: 5addf035498efdeb55e90b01
+
+> ## Ticket16: Error Handling
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=HandlingErrorsTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+>* Q: After passing the relevant tests, what is the validation code for Error Handling?
+>* A: 5ae9b76a703c7c603202ef22

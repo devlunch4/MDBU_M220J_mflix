@@ -61,11 +61,17 @@ public class UserDao extends AbstractMFlixDao {
      */
     public boolean addUser(User user) {
         //TODO > Ticket: Durable Writes -  you might want to use a more durable write concern here!
+        try {
         usersCollection.insertOne(user);
         return true;
         //TODO > Ticket: Handling Errors - make sure to only add new users
         // and not users that already exist.
-
+        } catch (MongoWriteException e) {
+            log.error(
+                    "Could not insert `{}` into `users` collection: {}", user.getEmail(), e.getMessage());
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("User with email `{0}` already exists", user.getEmail()));
+        }
     }
 
     /**
@@ -79,13 +85,19 @@ public class UserDao extends AbstractMFlixDao {
         //TODO> Ticket6: User Management - implement the method that allows session information to be
         // stored in it's designated collection.
         //return false;
-        Bson updateFilter = new Document("user_id", userId);
+        try{ Bson updateFilter = new Document("user_id", userId);
         Bson setUpdate = Updates.set("jwt", jwt);
         UpdateOptions options = new UpdateOptions().upsert(true);
         sessionsCollection.updateOne(updateFilter, setUpdate, options);
         return true;
         //TODO > Ticket: Handling Errors - implement a safeguard against
         // creating a session with the same jwt token.
+        } catch (MongoWriteException e){
+            String errorMessage =
+                    MessageFormat.format(
+                            "Unable to $set jwt token in sessions collection: {}", e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage, e);
+        }
     }
 
     /**
@@ -132,6 +144,7 @@ public class UserDao extends AbstractMFlixDao {
     public boolean deleteUser(String email) {
         // remove user sessions
         //TODO> Ticket6: User Management - implement the delete user method
+        try {
         if (deleteUserSessions(email)) {
             Document userDeleteFilter = new Document("email", email);
             DeleteResult res = usersCollection.deleteOne(userDeleteFilter);
@@ -142,10 +155,19 @@ public class UserDao extends AbstractMFlixDao {
 
             return res.wasAcknowledged();
         }
-        return false;
+//        return false;
         //TODO > Ticket: Handling Errors - make this method more robust by
         // handling potential exceptions.
         //return false;
+        } catch (Exception e) {
+            String errorMessage = MessageFormat.format("Issue caught while trying to " +
+                            "delete user `{}`: {}",
+                    email,
+                    e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+
+        }
+        return false;
     }
 
     /**
@@ -167,6 +189,7 @@ public class UserDao extends AbstractMFlixDao {
         // create query filter and update object.
         Bson updateFilter = new Document("email", email);
         Bson updateObject = Updates.set("preferences", userPreferences);
+        try {
         // update one document matching email.
         UpdateResult res = usersCollection.updateOne(updateFilter, updateObject);
         if(res.getModifiedCount() < 1){
@@ -177,5 +200,11 @@ public class UserDao extends AbstractMFlixDao {
         //TODO > Ticket: Handling Errors - make this method more robust by
         // handling potential exceptions when updating an entry.
         //return false;
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Issue caught while trying to update user `{}`: {}", email, e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
     }
 }

@@ -82,12 +82,21 @@ public class CommentDao extends AbstractMFlixDao {
         if (comment.getId() == null || comment.getId().isEmpty()) {
             throw new IncorrectDaoOperation("Comment objects need to have an id field set.");
         }
-        commentCollection.insertOne(comment);
-        return comment;
+        //commentCollection.insertOne(comment);
+        //return comment;
 
         // TODO> Ticket - Handling Errors: Implement a try catch block to
         // handle a potential write exception when given a wrong commentId.
         // return null;
+        try {
+            commentCollection.insertOne(comment);
+            return comment;
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Error occurred while adding a new Comment `{}`: {}", comment, e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
     }
 
     /**
@@ -114,7 +123,7 @@ public class CommentDao extends AbstractMFlixDao {
         Bson update = Updates.combine(Updates.set("text", text),
                 Updates.set("date", new Date()));
         UpdateResult res = commentCollection.updateOne(filter, update);
-
+        try{
         if (res.getMatchedCount() > 0) {
 
             if (res.getModifiedCount() != 1) {
@@ -126,6 +135,12 @@ public class CommentDao extends AbstractMFlixDao {
         log.error("Could not update comment `{}`. Make sure the comment is owned by `{}`",
                 commentId, email);
         return false;
+    } catch (MongoWriteException e) {
+        String messageError =
+                MessageFormat.format(
+                        "Error occurred while updating comment `{}`: {}", commentId, e.getMessage());
+        throw new IncorrectDaoOperation(messageError);
+    }
 
 
 
@@ -151,10 +166,12 @@ public class CommentDao extends AbstractMFlixDao {
                 Filters.eq("email", email),
                 Filters.eq("_id", new ObjectId(commentId))
         );
+        try {
         // Call deleteOne()
         DeleteResult res = commentCollection.deleteOne(filter);
         // in case the delete count is different than one the document
         // either does not exist or it does not match the email + _id filter.
+
         if (res.getDeletedCount()!=1){
             log.warn("Not able to delete comment `{}` for user `{}`. User" +
                             " does not own comment or already deleted!",
@@ -166,6 +183,11 @@ public class CommentDao extends AbstractMFlixDao {
         // TODO> Ticket Handling Errors - Implement a try catch block to
         // handle a potential write exception when given a wrong commentId.
         //return false;
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format("Error deleting comment " + "`{}`: {}", commentId, e);
+            throw new IncorrectDaoOperation(errorMessage);
+        }
     }
 
     /**
