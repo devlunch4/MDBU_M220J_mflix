@@ -116,3 +116,20 @@ Hint: We need to sort the comments in the $lookup stage.
   * <pre> mvn spring-boot:run</pre>
 >* Q: After passing the relevant tests, what is the validation code for User Report?
 >* A: 5accad3272455e5db79e4dad
+
+> ## Ticket13: Migration
+* ### Testing and Running the Application
+  * <pre> mvn clean compile exec:java -Dexec.mainClass="mflix.Migrator"</pre>
+  * <pre> mvn test -Dtest=MigrationTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+>* Q: After passing the relevant tests, what is the validation code for Migration?
+>* A: 5ad9f6a64fec134d116fb06f
+
+# Chapter 4: Resiliency
+
+> ## Ticket14: Connection Pooling
+* ### Testing and Running the Application
+  * <pre> mvn test -Dtest=ConnectionPoolingTest</pre>
+  * <pre> mvn spring-boot:run</pre>
+>* Q: After passing the relevant tests, what is the validation code for Connection Pooling?
+>* A: 5ad4f4f58d4b377bcf55d742
