@@ -1,3 +1,10 @@
+
+
+20211218 END. but Need ReView Course or ReStart Course.
+
+find connect error..
+
+
 # Chapter 0: Introduction and Setup
 
 > ## README: Setting Up mflix
