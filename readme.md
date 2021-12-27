@@ -4,6 +4,8 @@
 
 find connect error..
 
+restartin other private github repository.  
+
 
 # Chapter 0: Introduction and Setup
 
